@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(~{::title}, ~{::body})}">
+
+<head>
+    <title>Sign Up</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title text-center">Sign Up</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- ✅ Show General Message -->
+                        <div th:if="${message}" class="alert" 
+                             th:classappend="${message.type == 'success' ? 'alert-success' : 'alert-danger'}"
+                             role="alert">
+                            <span th:text="${message.content}"></span>
+                        </div>
+                        
+                        <form th:action="@{/register}" method="post" th:object="${user}">
+                            <!-- ✅ Full Name Field -->
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                <!-- ✅ Display Field Error -->
+                                <div th:if="${#fields.hasErrors('name')}" class="text-danger small">
+                                    <span th:errors="*{name}"></span>
+                                </div>
+                            </div>
+                            
+                            <!-- ✅ Email Field -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                                <!-- ✅ Display Field Error -->
+                                <div th:if="${#fields.hasErrors('email')}" class="text-danger small">
+                                    <span th:errors="*{email}"></span>
+                                </div>
+                            </div>
+                            
+                            <!-- ✅ Password Field -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" th:field="*{password}" required>
+                                <!-- ✅ Display Field Error -->
+                                <div th:if="${#fields.hasErrors('password')}" class="text-danger small">
+                                    <span th:errors="*{password}"></span>
+                                </div>
+                            </div>
+                            
+                            <!-- ✅ Confirm Password Field -->
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Sign Up</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <p>Already have an account? <a th:href="@{/logIn}">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

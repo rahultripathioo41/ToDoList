@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="wrapper">
+    <!-- ✅ Include Navbar -->
+    <div th:replace="~{admin/admin_base :: navbar}"></div>
+
+    <!-- ✅ Main Content -->
+    <div class="main-content">
+        <div th:replace="~{admin/admin_base :: sidebar}"></div>
+        <div class="container mt-4">
+<!--     <h2 class="mb-4" style="text-align:center">Welcome to Admin Page</h2> -->
+		<h2 class="mb-4 text-center">Add new Admin</h2>
+            
+            <!-- ✅ Search User by ID -->
+            <div class="mb-3">
+                <input type="text" id="userId" class="form-control" placeholder="Enter User ID">
+            </div>
+            <button class="btn btn-primary mb-3" onclick="loadUser()">Search</button>
+            
+            <!-- ✅ User Details Section -->
+            <div id="loadUser"></div>
+    
+		</div>
+
+    </div>
+
+    <!-- ✅ Include Footer -->
+    <div th:replace="~{admin/admin_base :: footer}"></div>
+</div>
+
+<!-- ✅ AJAX Script -->
+<script type="text/javascript">
+    function loadUser() {
+        let userId = document.getElementById("userId").value;
+        let xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let user = JSON.parse(xhr.responseText);
+
+                if (user) {
+                    document.getElementById("loadUser").innerHTML = `
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">User Details</h5>
+                                <p><strong>ID:</strong> ${user.id}</p>
+                                <p><strong>Name:</strong> ${user.name}</p>
+                                <p><strong>Email:</strong> ${user.email}</p>
+                                <p><strong>Role:</strong> ${user.role}</p>
+
+                                <!-- Role Update Option -->
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">Change Role:</label>
+                                    <select id="role" class="form-select">
+                                        <option value="ROLE_USER" ${user.role === 'USER' ? 'selected' : ''}>USER</option>
+                                        <option value="ROLE_ADMIN" ${user.role === 'ADMIN' ? 'selected' : ''}>ADMIN</option>
+                                    </select>
+                                </div>
+
+                                <!-- ✅ Update Role Button -->
+                                <button class="btn btn-primary" onclick="updateUserRole(${user.id})">Update Role</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById("loadUser").innerHTML = `<p class="text-danger">User not found</p>`;
+                }
+            }
+        };
+
+        xhr.open('GET', '/user/' + userId, true);
+        xhr.send();
+    }
+
+    function updateUserRole(userId) {
+        let role = document.getElementById("role").value;
+        let xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    alert("User role updated successfully");
+                    loadUser(); // Refresh user details after update
+                } else {
+                    alert("Failed to update user role");
+                }
+            }
+        };
+
+        xhr.open('POST', '/user/updateRole', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(`userId=${userId}&role=${role}`);
+    }
+</script>
+
+</body>
+</html>

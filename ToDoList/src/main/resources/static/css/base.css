@@ -1,0 +1,66 @@
+/* General Styling */
+html, body {
+    height: 100%; /* Ensure full height */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Wrapper for Flexbox Layout */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #343a40;
+    padding: 12px 20px;
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important;
+}
+
+/* Main Content Styling */
+.content {
+    flex-grow: 1; /* Push footer to the bottom */
+    padding: 20px;
+    background-color: #f1f1f1;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto; /* Ensures footer sticks to the bottom */
+}
+
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-body {
+    position: relative;
+}
+
+.btn-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}

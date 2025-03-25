@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home Page</title>
+</head>
+<body th:replace="~{base :: html('Home Page', ~{::content})}">
+    <th:block th:fragment="content">
+        <div class="container text-center mt-5">
+            <h1 class="mb-4">Welcome to Task Manager</h1>
+            <a id="signup" href="/signUp" class="btn btn-primary">GET STARTED</a>
+        </div>
+    </th:block>
+</body>
+</html>
