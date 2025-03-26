@@ -130,7 +130,10 @@ public class Usercontroller {
 
 	@GetMapping("addtask")
 	public String addtask(Model model) {
+		org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user=userservice.getUserDao().findByEmail(auth.getName());
 		model.addAttribute("task", new Task());
+		model.addAttribute("user",user);
 		return "user/user_addTask";
 	}
 	
@@ -152,9 +155,13 @@ public class Usercontroller {
 	}
 	
 	@GetMapping("clearTasks")
-	public String clearTask()
+	public String clearTask(Model model)
 	{
-		taskService.getTaskDao().deleteAll();
+		org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user=userservice.getUserDao().findByEmail(auth.getName());
+		taskService.getTaskDao().deleteById(user.getId());
+		model.addAttribute("user", user);
+		
 		return "user/user_dashboard";
 	}
 	
